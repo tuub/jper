@@ -65,5 +65,7 @@ if __name__ == "__main__":
         lines = sum(1 for l in open(fname))
         print("Report written to '{f}',\nsize: {s} lines.".format(f=fname,s=lines))
         #
-        print("All done.")
+        print()
+
+    print("All done.")
     print()

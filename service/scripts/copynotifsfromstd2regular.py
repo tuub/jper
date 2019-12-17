@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
     if args.run is not True:
         print("ERROR: '--run switch is needed!")
-        print(exit(-1))
+        exit(-1)
 
     if args.config:
         add_configuration(app, args.config)
@@ -130,4 +130,4 @@ if __name__ == "__main__":
     else:
         print("INFO: No std/hidden accounts found in ES to be processed, stop.")
 
-    print(exit(0))
+    exit(0)

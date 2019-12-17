@@ -105,7 +105,7 @@ if __name__ == "__main__":
             tree = lxml.html.fromstring(ae.content)
         except:
             print("ERROR: Could not parse .html page as tree.")
-            print(exit(-3))
+            exit(-3)
 
         print("INFO: xml tree read.")
 

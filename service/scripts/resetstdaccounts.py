@@ -60,6 +60,7 @@ def find_affiliation(http,recursion="full"):
                return ans
         except:
             print("ERROR: Could not parse/xpath mrcxml for '{x}'.".format(x=http))
+            print()
             exit(-7)
     else:
         print("WARNING: Could not GET '{x}': HTTP/1.1 {y} {z}.".format(x=ia,
@@ -75,6 +76,7 @@ def load_gndidx(fname):
             txt = f.read()
     except IOError:
         print("ERROR: could not gndidx file '{x}' (IOError).".format(x=fname))
+        print()
         exit(-3)
 
     return txt
@@ -93,6 +95,7 @@ def load_ezb2gnd(fname):
                     gnd[key] = [ val[:-1] ] # [unicode(val[:-1],'utf-8')]
     except IOError:
         print("ERROR: Could not read ezb2gnd map '{x}' (IOError).".format(x=fname))
+        print()
         exit(-3)
 
     return gnd
@@ -193,6 +196,7 @@ def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
                     tmp = aff.replace('"',"''")
                     print((u"%s" % tmp).encode('utf-8'))
 
+    print()
     return
 
 
@@ -344,4 +348,5 @@ if __name__ == "__main__":
 
     else:
         print("ERROR: no '{x}' files found.".format(x=OA_PARTICIPANTS_GLOB))
+        print()
         exit(-3)
