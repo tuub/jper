@@ -482,7 +482,7 @@ if app.config.get('SCHEDULE_DELETE_OLD_ROUTED',False):
     
 def cheep():
     app.logger.debug("Scheduled cheep")
-    print "Scheduled cheep"
+    print("Scheduled cheep")
 #schedule.every(1).minutes.do(cheep)
 
 def run():
@@ -498,7 +498,7 @@ def go():
 
 if __name__ == "__main__":
     initialise()
-    print "starting scheduler"
+    print("starting scheduler")
     app.logger.debug("Scheduler - starting up directly in own process.")
     run()
     

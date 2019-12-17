@@ -36,7 +36,7 @@ if __name__ == "__main__":
         app.config['DEBUG'] = False
         import pydevd
         pydevd.settrace(app.config.get('DEBUG_SERVER_HOST', 'localhost'), port=app.config.get('DEBUG_SERVER_PORT', 51234), stdoutToServer=True, stderrToServer=True)
-        print "STARTED IN REMOTE DEBUG MODE"
+        print("STARTED IN REMOTE DEBUG MODE")
 
     # if not args.from_date or not args.to_date:
     #     parser.print_help()
@@ -58,14 +58,12 @@ if __name__ == "__main__":
         fname = os.path.join(reportsdir,"detailed_routed_notifications_" + fstem)
         reports.admin_routed_report(from_date, to_date, fname)
         lines = sum(1 for l in open(fname))
-        print "Report written to '{f}',\nsize: {s} lines.".format(f=fname,s=lines)
+        print("Report written to '{f}',\nsize: {s} lines.".format(f=fname,s=lines))
         #
         fname = os.path.join(reportsdir,"detailed_failed_notifications_" + fstem)
         reports.admin_failed_report(from_date, to_date, fname)
         lines = sum(1 for l in open(fname))
-        print "Report written to '{f}',\nsize: {s} lines.".format(f=fname,s=lines)
+        print("Report written to '{f}',\nsize: {s} lines.".format(f=fname,s=lines))
         #
-        print
-
-    print "All done."
-    print
+        print("All done.")
+    print()

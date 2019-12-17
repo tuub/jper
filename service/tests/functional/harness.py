@@ -18,6 +18,7 @@ from octopus.modules.jper import client
 from service.tests import fixtures
 from octopus.lib import dates, http, isolang
 
+
 def _load_keys(path):
     """
     Load API keys from the file at the specified path
@@ -28,6 +29,7 @@ def _load_keys(path):
     with open(path) as f:
         return [x for x in f.read().split("\n") if x is not None and x != ""]
 
+
 def _load_repo_configs(path):
     """
     Load repository configurations from the json file at the specified path
@@ -37,6 +39,7 @@ def _load_repo_configs(path):
     """
     with open(path) as f:
         return json.loads(f.read())
+
 
 def _select_from(arr, probs=None):
     """
@@ -61,6 +64,7 @@ def _select_from(arr, probs=None):
                 return arr[i]
         return arr[len(arr) - 1]
 
+
 def _select_n(arr, n):
     """
     Select N unique elements from the array
@@ -81,6 +85,7 @@ def _select_n(arr, n):
 
     return selection
 
+
 def _random_string(shortest, longest):
     """
     Create a random string between the lengths of shortest and longest
@@ -99,6 +104,7 @@ def _random_string(shortest, longest):
         s += pool[l]
     return s
 
+
 def _random_url():
     """
     Return a random url.  Actually, this always returns the same url:
@@ -115,6 +121,7 @@ def _random_url():
     # return "http://example.com/file/" + uuid.uuid4().hex
     ## return "https://pubrouter.jisc.ac.uk/static/jperlogo.png"
     return "https://datahub.deepgreen.org/static/jperlogo.png"
+
 
 def _random_datetime(since):
     """
@@ -134,6 +141,7 @@ def _random_datetime(since):
     seconds = randint(lower, upper)
     return datetime.fromtimestamp(seconds)
 
+
 def _random_issn():
     """
     Generate a random ISSN.
@@ -147,6 +155,7 @@ def _random_issn():
     second = randint(100, 999)
     return str(first) + "-" + str(second) + str(_select_from([1, 2, 3, 4, 5, 6, 7, 8, 9, "X"]))
 
+
 def _random_doi():
     """
     Generate a random DOI.
@@ -157,6 +166,7 @@ def _random_doi():
     """
     return "10." + _random_string(3, 4) + "/" + _random_string(5, 10)
 
+
 def _random_email():
     """
     Generate a random email address
@@ -164,6 +174,7 @@ def _random_email():
     :return: something that looks like an email
     """
     return _random_string(10, 15) + "@" + _random_string(10, 15) + "." + _select_from(["ac.uk", "edu", "com"])
+
 
 def _make_notification(error=False, routable=0, repo_configs=None):
     """
@@ -331,6 +342,7 @@ def _make_notification(error=False, routable=0, repo_configs=None):
 
     return note
 
+
 def _get_file_path(parent_dir, max_file_size, error=False):
     """
     Get a path to a file which meets the criteria
@@ -349,7 +361,7 @@ def _get_file_path(parent_dir, max_file_size, error=False):
     # determine our target filesize
     mode = max_file_size / 10
     size = int(triangular(0, max_file_size, mode) * 1024 * 1024)
-    # print "Size (bytes):" + str(size)
+    # print("Size (bytes):" + str(size))
 
     # determine if this is going to be an error, and then pick one of the two main kinds of error
     invalid_jats = False
@@ -364,6 +376,7 @@ def _get_file_path(parent_dir, max_file_size, error=False):
     # make a suitable package at the file-path, and then return the path
     fixtures.PackageFactory.make_custom_zip(path, invalid_jats=invalid_jats, corrupt_zip=corrupt_zip, target_size=size)
     return path
+
 
 def validate(base_url, keys, throttle, mdrate, mderrors, cterrors, max_file_size, tmpdir):
     """
@@ -397,28 +410,28 @@ def validate(base_url, keys, throttle, mdrate, mderrors, cterrors, max_file_size
         try:
             api_key = _select_from(keys)
             j = client.JPER(api_key, base_url)
-            # print "API " + api_key
+            # print("API " + api_key)
 
             # determine whether the metadata we're going to send will cause errors
             mdtype = _select_from(mderroropts, mderrorprobs)
-            # print "MD: " + mdtype
+            # print("MD: " + mdtype)
 
             # generate a notification which may or may not have an error
             note = _make_notification(error=mdtype=="error")
-            # print note
+            # print(note)
 
             # determine whether we're going to send some content
             hasct = _select_from(mdopts, mdprobs)
-            # print "CT: " + hasct
+            # print("CT: " + hasct)
             file_handle = None
             filepath = None
             cterr = "ok"
             if hasct == "md+ct":
                 # determine if the content should have an error
                 cterr = _select_from(cterroropts, cterrorprobs)
-                #print "CTERR:" + cterr
+                #print("CTERR:" + cterr)
                 filepath = _get_file_path(tmpdir, max_file_size, error=cterr=="error")
-                #print "File" + filepath
+                #print("File" + filepath)
                 file_handle = open(filepath)
 
             app.logger.debug("Thread:{x} - Validate request for Account:{y} Type:{z} MD:{a} CT:{b}".format(x=tname, y=api_key, z=hasct, a=mdtype, b=cterr))
@@ -439,6 +452,7 @@ def validate(base_url, keys, throttle, mdrate, mderrors, cterrors, max_file_size
             time.sleep(throttle)
         except Exception as e:
             app.logger.error("Thread:{x} - MAJOR ISSUE - Fatal exception '{y}'".format(x=tname, y=e.message))
+
 
 def create(base_url, keys, throttle, mdrate, mderrors, cterrors, max_file_size, tmpdir, retrieve_rate, routable, repo_configs):
     """
@@ -478,28 +492,28 @@ def create(base_url, keys, throttle, mdrate, mderrors, cterrors, max_file_size, 
         try:
             api_key = _select_from(keys)
             j = client.JPER(api_key, base_url)
-            #print "API " + api_key
+            #print("API " + api_key)
 
             # determine whether the metadata we're going to send will cause errors
             mdtype = _select_from(mderroropts, mderrorprobs)
-            #print "MD: " + mdtype
+            #print("MD: " + mdtype)
 
             # generate a notification which may or may not have an error
             note = _make_notification(error=mdtype=="error", routable=routable, repo_configs=repo_configs)
-            #print note
+            #print(note)
 
             # determine whether we're going to send some content
             hasct = _select_from(mdopts, mdprobs)
-            #print "CT: " + hasct
+            #print("CT: " + hasct)
             file_handle = None
             filepath = None
             cterr = "ok"
             if hasct == "md+ct":
                 # determine if the content should have an error
                 cterr = _select_from(cterroropts, cterrorprobs)
-                #print "CTERR:" + cterr
+                #print("CTERR:" + cterr)
                 filepath = _get_file_path(tmpdir, max_file_size, error=cterr=="error")
-                #print "File" + filepath
+                #print("File" + filepath)
                 file_handle = open(filepath)
 
             app.logger.debug("Thread:{x} - Create request for Account:{y} Type:{z} MD:{a} CT:{b}".format(x=tname, y=api_key, z=hasct, a=mdtype, b=cterr))
@@ -543,6 +557,7 @@ def create(base_url, keys, throttle, mdrate, mderrors, cterrors, max_file_size, 
         except Exception as e:
             app.logger.error("Thread:{x} - Fatal exception '{y}'".format(x=tname, y=e.message))
 
+
 def listget(base_url, keys, throttle, generic_rate, max_lookback, tmpdir, repo_configs, error_rate, get_rate):
     """
     Thread runner that issues list and get requests against the API
@@ -579,11 +594,11 @@ def listget(base_url, keys, throttle, generic_rate, max_lookback, tmpdir, repo_c
         try:
             api_key = _select_from(keys)
             j = client.JPER(api_key, base_url)
-            #print "API " + api_key
+            #print("API " + api_key)
 
             # determine whether the metadata we're going to send will cause errors
             reqtype = _select_from(genopts, genprobs)
-            #print "Req: " + reqtype
+            #print("Req: " + reqtype)
 
             # use this to determine the repository id for the request
             repository_id = None
@@ -594,7 +609,7 @@ def listget(base_url, keys, throttle, generic_rate, max_lookback, tmpdir, repo_c
             # determine the "since" date we're going to use for the request
             lookback = randint(0, max_lookback)
             since = dates.format(dates.before_now(lookback))
-            # print "Since: " + since
+            # print("Since: " + since)
 
             # choose a page size
             page_size = randint(1, 100)
@@ -675,6 +690,7 @@ def listget(base_url, keys, throttle, generic_rate, max_lookback, tmpdir, repo_c
         except Exception as e:
             app.logger.error("Thread:{x} - Fatal exception '{y}'".format(x=tname, y=e.message))
 
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
@@ -730,7 +746,7 @@ if __name__ == "__main__":
         app.config['DEBUG'] = False
         import pydevd
         pydevd.settrace(app.config.get('DEBUG_SERVER_HOST', 'localhost'), port=app.config.get('DEBUG_SERVER_PORT', 51234), stdoutToServer=True, stderrToServer=True)
-        print "STARTED IN REMOTE DEBUG MODE"
+        print("STARTED IN REMOTE DEBUG MODE")
 
     # attempt to load the publisher and repo keys
     pubkeys = _load_keys(args.pub_keys)

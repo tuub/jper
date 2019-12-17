@@ -11,8 +11,8 @@ try:
     from octopus.core import add_configuration, app
     from service.models import Account,RepositoryConfig
 except:
-    print "ERROR: Need to run from a virtualenv enabled setting, i.e."
-    print "ERROR: run 'source ../../bin/activate' in some DG installation root folder first!"
+    print("ERROR: Need to run from a virtualenv enabled setting, i.e.")
+    print("ERROR: run 'source ../../bin/activate' in some DG installation root folder first!")
     exit(-1)
 
 ## from datetime import datetime
@@ -59,13 +59,12 @@ def find_affiliation(http,recursion="full"):
                    ans += find_affiliation(ht,recursion)
                return ans
         except:
-            print "ERROR: Could not parse/xpath mrcxml for '{x}'.".format(x=http)
-            print
-            exit(-7)
+            print("ERROR: Could not parse/xpath mrcxml for '{x}'.".format(x=http))
+            print(exit(-7))
     else:
-        print "WARNING: Could not GET '{x}': HTTP/1.1 {y} {z}.".format(x=ia,
+        print("WARNING: Could not GET '{x}': HTTP/1.1 {y} {z}.".format(x=ia,
                                                                        y=ae.status_code,
-                                                                       z=ae.reason)
+                                                                       z=ae.reason))
     return ans
 
 
@@ -75,9 +74,8 @@ def load_gndidx(fname):
         with open(fname,'r') as f:
             txt = f.read()
     except IOError:
-        print "ERROR: could not gndidx file '{x}' (IOError).".format(x=fname)
-        print
-        exit(-3)
+        print("ERROR: could not gndidx file '{x}' (IOError).".format(x=fname))
+        print(exit(-3))
 
     return txt
 
@@ -94,9 +92,8 @@ def load_ezb2gnd(fname):
                 else: 
                     gnd[key] = [ val[:-1] ] # [unicode(val[:-1],'utf-8')]
     except IOError:
-        print "ERROR: Could not read ezb2gnd map '{x}' (IOError).".format(x=fname)
-        print
-        exit(-3)
+        print("ERROR: Could not read ezb2gnd map '{x}' (IOError).".format(x=fname))
+        print(exit(-3))
 
     return gnd
 
@@ -117,7 +114,7 @@ def mkdir_p(path):
 
 def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
 
-    print (u" %7s == %s ('%s')" % (ezbid, fullname, sigel)).encode('utf-8')
+    print((u" %7s == %s ('%s')" % (ezbid, fullname, sigel)).encode('utf-8'))
 
     outfname = (u"%s/%s_template.csv" % (RESULTDIR, ezbid)).encode('utf-8')
     recursion = 'full'
@@ -143,12 +140,12 @@ def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
             ### cmd = (u'grep "^%s\t" "%s" | cut -f2' % (corp,fname)).encode('utf-8')
             ans = os.popen(cmd).read().split('\n')
             while len(ans[-1]) == 0: ans = ans[:-1]
-            ##print "DEBUG: {d}".format(d=ans)
+            ##print("DEBUG: {d}".format(d=ans))
             #if ans:
             #    https = unicode( ','.join(ans), 'utf-8' )
-            #    print (u" %7s => %s : %s" % (ezbid, corp, https)).encode('utf-8')
+            #    print((u" %7s => %s : %s" % (ezbid, corp, https)).encode('utf-8'))
             #else:
-            print (u" %7s => %s" % (ezbid, corp)).encode('utf-8')
+            print((u" %7s => %s" % (ezbid, corp)).encode('utf-8'))
 
             for s in ans:
                 http = s.split('\t')
@@ -184,23 +181,22 @@ def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
                 for aff in sorted(set(affs)):
                     if aff and not (aff in exlist):
                         tmp = aff.replace('"',"''")
-                        print (u"%s" % tmp).encode('utf-8')
+                        print((u"%s" % tmp).encode('utf-8'))
                         f.write( (u'"%s",,,,,\n' % tmp).encode('utf-8') )
         except IOError:
-            print "WARNING: Could not write to file '{x}'.".format(x=outfname)
+            print("WARNING: Could not write to file '{x}'.".format(x=outfname))
             for aff in sorted(set(affs)):
                 if aff and not (aff in exlist):
                     tmp = aff.replace('"',"''")
-                    print (u"%s" % tmp).encode('utf-8')
+                    print((u"%s" % tmp).encode('utf-8'))
 
-    print
     return
 
 
 def get_pass(pw_len=12):
     new_pw = "geheim"
     chrs = string.letters + string.digits
-    while new_pw is "geheim":
+    while new_pw == "geheim":
         new_pw = ''.join([chrs[ord(os.urandom(1)) % len(chrs)] for j in range(pw_len)])
     return new_pw
 
@@ -222,11 +218,11 @@ def update_account(fullname, ezbid, sigel='', purge=False, passive=False):
             acc.remove()
             time.sleep(1)
             if rec is not None:
-                print "INFO: Both account *AND* match config for id='{x}' successfully removed!".format(x=ezbid)
+                print("INFO: Both account *AND* match config for id='{x}' successfully removed!".format(x=ezbid))
             else:
-                print "INFO: Repository account for id='{x}' successfully removed!".format(x=ezbid)
+                print("INFO: Repository account for id='{x}' successfully removed!".format(x=ezbid))
         else:
-            print "WARNING: Repository account for id='{x}' not found; nothing removed...".format(x=ezbid)
+            print("WARNING: Repository account for id='{x}' not found; nothing removed...".format(x=ezbid))
         return
 
     #
@@ -257,7 +253,7 @@ def update_account(fullname, ezbid, sigel='', purge=False, passive=False):
 
     acc.save()
     time.sleep(1)
-    print "INFO: Account for id='{x}' (pw='{y}') updated/created; with passive={z}.".format(x=ezbid,y=pw,z=passive)
+    print("INFO: Account for id='{x}' (pw='{y}') updated/created; with passive={z}.".format(x=ezbid,y=pw,z=passive))
 
     #
     rec = RepositoryConfig().pull_by_repo(acc.id)
@@ -269,14 +265,13 @@ def update_account(fullname, ezbid, sigel='', purge=False, passive=False):
         with open(csvfname,'r') as f:
             saved = rec.set_repo_config(csvfile=f, repository=acc.id)
             if saved:
-                print "INFO: Match config for id='{x}' updated.".format(x=ezbid)
+                print("INFO: Match config for id='{x}' updated.".format(x=ezbid))
             else:
-                print "WARNING: Could not update match config for id='{x}'.".format(x=ezbid)
+                print("WARNING: Could not update match config for id='{x}'.".format(x=ezbid))
     except:
-        print "WARNING: Could not upload repository config for id='{x}'.".format(x=ezbid)
+        print("WARNING: Could not upload repository config for id='{x}'.".format(x=ezbid))
 
     return
-
 
 
 if __name__ == "__main__":
@@ -336,14 +331,14 @@ if __name__ == "__main__":
                             # part[unicode("a"+row['EZB-Id'],'utf-8')] = ( unicode(row['Institution'].replace('\r','; '),'utf-8'), unicode(row['Sigel'],'utf-8') )
                             part[unicode(row['EZB-Id'],'utf-8')] = ( unicode(row['Institution'].replace('\r','; '),'utf-8'), unicode(row['Sigel'],'utf-8') )
             except IOError:
-                print "ERROR: Could not read/parse '{x}' (IOError).".format(x=fname)
+                print("ERROR: Could not read/parse '{x}' (IOError).".format(x=fname))
 
-            print "INFO: Participant file '{x}' successfully read/parsed.".format(x=fname)
+            print("INFO: Participant file '{x}' successfully read/parsed.".format(x=fname))
 
-        print "INFO: Participant files processed; a total of {y} institution(s) found.".format(y=len(part))
+        print("INFO: Participant files processed; a total of {y} institution(s) found.".format(y=len(part)))
 
-        # print "DEBUG: {d}".format(d=part)
-        # print "DEBUG:"
+        # print("DEBUG: {d}".format(d=part))
+        # print("DEBUG:")
         idx = load_ezb2gnd(EZB2GND_FILE)
         # txt = load_gndidx(GND_IDX_FILE)
 
@@ -357,7 +352,6 @@ if __name__ == "__main__":
            update_account(fullname, ezbid, sigel, args.purge, args.passive)
 
     else:
-        print "ERROR: no '{x}' files found.".format(x=OA_PARTICIPANTS_GLOB)
-        print
+        print("ERROR: no '{x}' files found.".format(x=OA_PARTICIPANTS_GLOB))
         exit(-3)
 

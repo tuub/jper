@@ -13,6 +13,7 @@ import json
 from service import models
 from random import random
 
+
 def _load_keys(path):
     """
     Load API keys from the specified file
@@ -23,6 +24,7 @@ def _load_keys(path):
     with open(path) as f:
         return f.read().split("\n")
 
+
 def _load_repo_configs(path):
     """
     load repository configs from the specified json file
@@ -32,6 +34,7 @@ def _load_repo_configs(path):
     """
     with open(path) as f:
         return json.loads(f.read())
+
 
 if __name__ == "__main__":
     import argparse
@@ -62,7 +65,7 @@ if __name__ == "__main__":
         app.config['DEBUG'] = False
         import pydevd
         pydevd.settrace(app.config.get('DEBUG_SERVER_HOST', 'localhost'), port=app.config.get('DEBUG_SERVER_PORT', 51234), stdoutToServer=True, stderrToServer=True)
-        print "STARTED IN REMOTE DEBUG MODE"
+        print("STARTED IN REMOTE DEBUG MODE")
 
     # init the app
     initialise()
