@@ -8,7 +8,7 @@ consume notifications.
 Go around it at your own risk!
 """
 
-from flask.ext.login import current_user
+from flask_login import current_user
 from service import models, packages
 from octopus.lib import dates, dataobj, http
 from octopus.core import app

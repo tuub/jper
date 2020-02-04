@@ -7,7 +7,7 @@ import uuid, json, time, requests, re
 from flask import Blueprint, request, url_for, flash, redirect, make_response
 from flask import render_template, abort, send_file
 from service.forms.adduser import AdduserForm
-from flask.ext.login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user
 from octopus.core import app
 from octopus.lib import webapp, dates
 from service.api import JPER, ValidationException, ParameterException, UnauthorisedException

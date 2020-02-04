@@ -6,7 +6,7 @@ from flask import stream_with_context, Response
 import json, csv
 from octopus.core import app
 from octopus.lib import webapp, dates
-from flask.ext.login import login_user, logout_user, current_user, login_required
+from flask_login import login_user, logout_user, current_user, login_required
 from service.api import JPER, ValidationException, ParameterException, UnauthorisedException
 from service import models
 

@@ -5,7 +5,7 @@ Blueprint for providing reports UI
 import os, time, re
 
 from flask import Blueprint, request, url_for, render_template, redirect, send_from_directory, flash
-from flask.ext.login import current_user
+from flask_login import current_user
 
 from service import reports
 from octopus.core import app

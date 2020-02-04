@@ -12,7 +12,7 @@ from service.forms.webservice import WebserviceForm
 
 from flask import Blueprint, request, url_for, flash, redirect, make_response
 from flask import render_template, abort
-from flask.ext.login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user
 from datetime import datetime
 from octopus.core import app
 

@@ -6,7 +6,7 @@ Has auth control, so it is better than exposing your ES index directly.
 import json, urllib.request, urllib.error, urllib.parse
 
 from flask import Blueprint, request, abort, make_response
-from flask.ext.login import current_user
+from flask_login import current_user
 
 from service import models
 from octopus.core import app
