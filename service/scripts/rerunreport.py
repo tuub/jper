@@ -58,5 +58,5 @@ if __name__ == "__main__":
 
         reports.publisher_report(args.from_date, args.to_date, reportfile)
 
-    print("Done: Report written to '{f}'".format(f=reportfile))
+    print(("Done: Report written to '{f}'".format(f=reportfile)))
     print()

@@ -24,7 +24,7 @@ def make_hidden2regular(hidden, regular={}):
     for x in hidden:
         regids = []
         ezbid = hidden[x][1:].upper()
-        if ezbid in regular.values():
+        if ezbid in list(regular.values()):
             regids = [ y for y in regular if ezbid == regular[y] ]
         if len(regids) > 0:
             if x in hid2reg:
@@ -42,9 +42,9 @@ def assign_hidnotes2regular(hid2reg={}, page_size=1000):
 
     pages = (total / page_size) + 1
 
-    for page in xrange(pages):
+    for page in range(pages):
         frm = page*page_size
-        print("% 8d" % frm)
+        print(("% 8d" % frm))
         for raw in RoutedNotification.query(_from=frm,size=page_size).get('hits',{}).get('hits',[]):
             if '_source' in raw:
                 typ = raw['_type']
@@ -60,7 +60,7 @@ def assign_hidnotes2regular(hid2reg={}, page_size=1000):
 
                 note.save(type=typ)
 
-    print("INFO: {total} routed notifications processed and adjusted.".format(total=total))
+    print(("INFO: {total} routed notifications processed and adjusted.".format(total=total)))
 
     return True
 
@@ -110,17 +110,17 @@ if __name__ == "__main__":
                     for row in reader:
                         if 'EZB-Id' in row and 'Institution' in row:
                             if 'Institution' in row['Institution']: continue
-                            part.append( unicode(row['EZB-Id'], 'utf-8') )
+                            part.append( str(row['EZB-Id'], 'utf-8') )
             except IOError:
-                print "ERROR: Could not read/parse '{x}' (IOError).".format(x=fname)
+                print("ERROR: Could not read/parse '{x}' (IOError).".format(x=fname))
 
-            print "INFO: Participant file '{x}' successfully read/parsed.".format(x=fname)
+            print("INFO: Participant file '{x}' successfully read/parsed.".format(x=fname))
 
         part = list(set(part))
-        filtered_reg = { rid : bibid for rid,bibid in regular.items() if bibid in part }
-        print "INFO: Participant files processed; total of {y} institution(s) listed.".format(y=len(part))
+        filtered_reg = { rid : bibid for rid,bibid in list(regular.items()) if bibid in part }
+        print("INFO: Participant files processed; total of {y} institution(s) listed.".format(y=len(part)))
 
-    print "INFO: Filter step with input CSV files left {y} receiving repository account(s) (of {z}).".format(y=len(filtered_reg), z=len(regular))
+    print("INFO: Filter step with input CSV files left {y} receiving repository account(s) (of {z}).".format(y=len(filtered_reg), z=len(regular)))
 
     ### hid2reg = make_hidden2regular(hidden,regular)
     hid2reg = make_hidden2regular(hidden,filtered_reg)

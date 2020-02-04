@@ -16,7 +16,7 @@ from octopus.modules.epmc.models import JATS, EPMCMetadataXML, RSCMetadataXML
 # 2017-01-19 TD : in the deepgreen setting, postcodes are not needed. They are rather counter-productive...
 from service import models
 from octopus.modules.store import store
-from StringIO import StringIO
+from io import StringIO
 
 class PackageException(Exception):
     """
@@ -1219,7 +1219,7 @@ class FilesAndJATS(PackageHandler):
             ag = grant.get("agency")
             if ag is not None:
                 obj["name"] = ag
-            if len(obj.keys()) > 0:
+            if len(list(obj.keys())) > 0:
                 md.add_project(obj)
 
         for kw in self.epmc.mesh_descriptors:

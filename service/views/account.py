@@ -1,7 +1,7 @@
 """
 Blueprint for providing account management
 """
-from __future__ import division
+
 import uuid, json, time, requests, re
 
 from flask import Blueprint, request, url_for, flash, redirect, make_response
@@ -19,15 +19,15 @@ import math
 import unicodecsv 
 from jsonpath_rw_ext import parse
 # 2018-12-18 TD : Replacement for zip(...) which will _not_ truncate the result
-from itertools import izip_longest
+from itertools import zip_longest
 
 
 from service import models
 
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except:
-    from StringIO import StringIO
+    from io import StringIO
 
 
 blueprint = Blueprint('account', __name__)
@@ -364,7 +364,7 @@ def download(account_id):
     #
     # 2018-12-18 TD : Here comes the solution: Using a tool in itertools: izip_longest
     #
-    rows = list( izip_longest(*rows, fillvalue=u'') )
+    rows = list( zip_longest(*rows, fillvalue='') )
     #
 
     strm = StringIO()
@@ -700,7 +700,7 @@ def config(username):
         for hdr in xtable["header"]:
             rows.append( (m.value for m in parse(xtable[hdr]).find(res)), )
 
-        rows = list( izip_longest(*rows, fillvalue=u'') )
+        rows = list( zip_longest(*rows, fillvalue='') )
 
         strm = StringIO()
         writer = unicodecsv.writer(strm, delimiter=',', quoting=unicodecsv.QUOTE_MINIMAL)

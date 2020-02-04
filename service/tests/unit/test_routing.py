@@ -67,7 +67,7 @@ class TestRouting(ESTestCase):
             if m is False:
                 assert ms[2] is False
             else:
-                assert isinstance(m, basestring)
+                assert isinstance(m, str)
                 assert len(m) > 0
 
     def test_02_domain_email(self):
@@ -82,7 +82,7 @@ class TestRouting(ESTestCase):
             if m is False:
                 assert ms[2] is False
             else:
-                assert isinstance(m, basestring)
+                assert isinstance(m, str)
                 assert len(m) > 0
 
     def test_03_exact_substring(self):
@@ -98,7 +98,7 @@ class TestRouting(ESTestCase):
             if m is False:
                 assert ms[2] is False
             else:
-                assert isinstance(m, basestring)
+                assert isinstance(m, str)
                 assert len(m) > 0
 
     def test_04_exact(self):
@@ -112,7 +112,7 @@ class TestRouting(ESTestCase):
             if m is False:
                 assert ms[2] is False
             else:
-                assert isinstance(m, basestring)
+                assert isinstance(m, str)
                 assert len(m) > 0
 
     def test_05_author_match(self):
@@ -127,7 +127,7 @@ class TestRouting(ESTestCase):
             if m is False:
                 assert ms[2] is False
             else:
-                assert isinstance(m, basestring)
+                assert isinstance(m, str)
                 assert len(m) > 0
 
     def test_06_author_string_match(self):
@@ -141,7 +141,7 @@ class TestRouting(ESTestCase):
             if m is False:
                 assert ms[2] is False
             else:
-                assert isinstance(m, basestring)
+                assert isinstance(m, str)
                 assert len(m) > 0
 
     def test_07_postcode_match(self):
@@ -157,7 +157,7 @@ class TestRouting(ESTestCase):
             if m is False:
                 assert ms[2] is False
             else:
-                assert isinstance(m, basestring)
+                assert isinstance(m, str)
                 assert len(m) > 0
 
     def test_08_enhance(self):

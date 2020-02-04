@@ -50,27 +50,27 @@ if __name__ == "__main__":
                 if args.stop:
                     for line in sys.stdin:
                         repo = line.rstrip()
-                        print("stop {repo}".format(repo=repo))
+                        print(("stop {repo}".format(repo=repo)))
                         control.deactivate_account(repo)
                 elif args.activate:
                     for line in sys.stdin:
                         repo = line.rstrip()
-                        print("activate {repo}".format(repo=repo))
+                        print(("activate {repo}".format(repo=repo)))
                         control.activate_account(repo)
             else:
                 with open(args.input,'r') as f:
                     if args.stop:
                         for line in f:
                             repo = line.rstrip()
-                            print("stop {repo}".format(repo=repo))
+                            print(("stop {repo}".format(repo=repo)))
                             control.deactivate_account(repo)
                     elif args.activate:
                         for line in f:
                             repo = line.rstrip()
-                            print("activate {repo}".format(repo=repo))
+                            print(("activate {repo}".format(repo=repo)))
                             control.activate_account(repo)
         except Exception as e:
-            print("ERROR: exception '{s}'".format(s=e.message))
+            print(("ERROR: exception '{s}'".format(s=e.message)))
             pass
     else:
         if args.stop:

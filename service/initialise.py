@@ -43,7 +43,7 @@ def initialise():
             "password":generate_password_hash(un)
         }
         c = requests.post(ia, data=json.dumps(su))
-        print("first superuser account created for user " + un + " with password " + un )
+        print(("first superuser account created for user " + un + " with password " + un ))
         print("THIS FIRST SUPERUSER ACCOUNT IS INSECURE! GENERATE A NEW PASSWORD FOR IT IMMEDIATELY! OR CREATE A NEW ACCOUNT AND DELETE THIS ONE...")
                 
     file_handler = RotatingFileHandler(app.config.get('LOGFILE','/home/green/jperlog'), maxBytes=1000000000, backupCount=5)

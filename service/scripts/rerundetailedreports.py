@@ -46,7 +46,7 @@ if __name__ == "__main__":
     
     reportsdir = app.config.get('REPORTSDIR','/home/green/jper_reports')
 
-    for mnth in xrange(1,13):
+    for mnth in range(1,13):
         nxmth = (mnth+1) % 13
         from_date = "%04d-%02d-01T00:00:00Z" % (year,mnth)
         fstem = "%04d-%02d.csv" % (year,mnth)
@@ -58,12 +58,12 @@ if __name__ == "__main__":
         fname = os.path.join(reportsdir,"detailed_routed_notifications_" + fstem)
         reports.admin_routed_report(from_date, to_date, fname)
         lines = sum(1 for l in open(fname))
-        print("Report written to '{f}',\nsize: {s} lines.".format(f=fname,s=lines))
+        print(("Report written to '{f}',\nsize: {s} lines.".format(f=fname,s=lines)))
         #
         fname = os.path.join(reportsdir,"detailed_failed_notifications_" + fstem)
         reports.admin_failed_report(from_date, to_date, fname)
         lines = sum(1 for l in open(fname))
-        print("Report written to '{f}',\nsize: {s} lines.".format(f=fname,s=lines))
+        print(("Report written to '{f}',\nsize: {s} lines.".format(f=fname,s=lines)))
         #
         print()
 

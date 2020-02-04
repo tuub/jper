@@ -85,7 +85,7 @@ def standard_authentication():
                 pass
 
     if remote_user:
-        print("remote user present " + remote_user)
+        print(("remote user present " + remote_user))
         app.logger.debug("Remote user connecting: {x}".format(x=remote_user))
         user = models.Account.pull(remote_user)
         if user:
@@ -93,7 +93,7 @@ def standard_authentication():
         else:
             abort(401)
     elif apik:
-        print("API key provided " + apik)
+        print(("API key provided " + apik))
         app.logger.debug("API key connecting: {x}".format(x=apik))
         res = models.Account.query(q='api_key:"' + apik + '"')['hits']['hits']
         if len(res) == 1:

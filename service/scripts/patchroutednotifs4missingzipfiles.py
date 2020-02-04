@@ -31,9 +31,9 @@ def repair_notes4missing_zip_files(packageprefs, page_size=1000):
     #
     pages = (total / page_size) + 1
     #
-    for page in xrange(pages):
+    for page in range(pages):
         frm = page*page_size
-        print("% 8d" % frm)
+        print(("% 8d" % frm))
         for raw in RoutedNotification.query(_from=frm,size=page_size).get('hits',{}).get('hits',[]):
             if '_source' in raw:
                 note_id = raw['_id']
