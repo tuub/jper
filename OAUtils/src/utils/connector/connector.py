@@ -11,8 +11,8 @@ import utils.config as config
 import sys
 import contextlib
 import urllib3
-import elasticsearch as ES
-from elasticsearch import helpers
+import elasticsearch2 as ES
+from elasticsearch2 import helpers
 import utils.exception.handler as EH
 import utils.logger.handler as LH
 from abc import abstractmethod, ABCMeta
