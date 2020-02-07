@@ -87,7 +87,7 @@ if app.config.get("FUNCTIONAL_TEST_MODE", False):
 
 # this allows us to override the standard static file handling with our own dynamic version
 @app.route("/statico/<path:filename>")
-def static(filename):
+def statico(filename):
     """
     Serve static content
 
