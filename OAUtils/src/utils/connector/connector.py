@@ -178,6 +178,8 @@ class _U_ElasticSearchV1(U_AbstractConnector):
             self.connector = ES.Elasticsearch(config.configES)
         except urllib3.exceptions.LocationValueError as err:
             raise EH.DBConnectionError("Location value error", str(err))
+        finally:
+            LH.logger.info("Connected successfully to {db}".format(db=config.configES))
         try:
             with nostderr():
                 self.connector.ping()
