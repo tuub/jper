@@ -86,15 +86,15 @@ if app.config.get("FUNCTIONAL_TEST_MODE", False):
 
 
 # this allows us to override the standard static file handling with our own dynamic version
-#@app.route("/static/<path:filename>")
-#def static(filename):
-#    """
-#    Serve static content
-#
-#    :param filename: static file path to be retrieved
-#    :return: static file content
-#    """
-#    return custom_static(filename)
+@app.route("/statico/<path:filename>")
+def static(filename):
+    """
+    Serve static content
+
+    :param filename: static file path to be retrieved
+    :return: static file content
+    """
+    return custom_static(filename)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=app.config['DEBUG'], port=app.config['PORT'], threaded=app.config.get("THREADED", False))
