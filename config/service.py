@@ -23,7 +23,7 @@ THREADED = True
 # important overrides for the ES module
 
 # elasticsearch back-end connection settings
-ELASTIC_SEARCH_HOST = "http://gateway:9200"
+ELASTIC_SEARCH_HOST = "http://elasticsearch:9200"
 """base url to access elasticsearch"""
 
 ELASTIC_SEARCH_INDEX = "jper"
@@ -113,7 +113,7 @@ PACKAGE_HANDLERS = {
 
 PUBSTOREDIR = '/data/dg_storage'
 USERDIR = '/home/sftpusers' # this is ASSUMED in ssh config and possibly in shell scripts. So just don't change it
-API_URL = "https://www.oa-deepgreen.de/api/v1/notification"
+API_URL = "http://elasticsearch/api/v1/notification"
 ## API_URL = "https://pubrouter.jisc.ac.uk/api/v1/notification"
 #API_URL = "http://test.cottagelabs.com:5998/api/v1/notification"
 MAX_TMPDIR_TRANSACTS_PER_ACC = 99
@@ -136,7 +136,7 @@ SCHEDULE_DELETE_OLD_ROUTED = True
 SCHEDULE_KEEP_ROUTED_MONTHS = 3
 
 LOGLEVEL = 'debug'
-LOGFILE = '/home/green/jperlog'
+LOGFILE = '/home/green/jper_logs'
 
 STORE_TMP_IMPL = "octopus.modules.store.store.TempStore"
 """implementation class of the temporary local filestore"""
