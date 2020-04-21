@@ -24,12 +24,12 @@ import schedule, time, os, shutil, requests, datetime, tarfile, zipfile, subproc
 from threading import Thread
 from octopus.core import app, initialise
 from service import reports
-from . import models
+from service import models
 
 if app.config.get('DEEPGREEN_EZB_ROUTING',False):
-    from . import routing_deepgreen as routing
+    from service import routing_deepgreen as routing
 else:
-    from . import routing
+    from service import routing
 
 
 # functions for the checkftp to unzip and move stuff up then zip again in incoming packages
