@@ -35,6 +35,7 @@ if __name__ == "__main__":
 
 # most of the imports should be done here, after initialise()
 from service import models
+from service.views.web_app_routes import index, statico
 
 @app.login_manager.user_loader
 def load_account_for_login_manager(userid):
@@ -47,7 +48,7 @@ def load_account_for_login_manager(userid):
     acc = models.Account().pull(userid)
     return acc
 
-app.add_url_rule('/', view_func=service.views.web_app_routes.index)
+app.add_url_rule('/', view_func=index)
 
 from service.views.webapi import blueprint as webapi
 app.register_blueprint(webapi, url_prefix="/api/v1")
@@ -76,7 +77,7 @@ if app.config.get("FUNCTIONAL_TEST_MODE", False):
 
 
 # this allows us to override the standard static file handling with our own dynamic version
-app.add_url_rule('/statico/<path:filename>', view_func=service.views.web_app_routes.statico)
+app.add_url_rule('/statico/<path:filename>', view_func=statico)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=app.config['DEBUG'], port=app.config['PORT'], threaded=app.config.get("THREADED", False))
