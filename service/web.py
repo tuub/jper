@@ -34,9 +34,6 @@ if __name__ == "__main__":
     initialise()
 
 # most of the imports should be done here, after initialise()
-from flask import render_template
-from octopus.lib.webapp import custom_static
-
 from service import models
 
 @app.login_manager.user_loader
@@ -50,14 +47,7 @@ def load_account_for_login_manager(userid):
     acc = models.Account().pull(userid)
     return acc
 
-@app.route("/")
-def index():
-    """
-    Default index page
-
-    :return: Flask response for rendered index page
-    """
-    return render_template("index.html")
+app.add_url_rule('/', view_func=service.views.web_app_routes.index)
 
 from service.views.webapi import blueprint as webapi
 app.register_blueprint(webapi, url_prefix="/api/v1")
@@ -86,15 +76,7 @@ if app.config.get("FUNCTIONAL_TEST_MODE", False):
 
 
 # this allows us to override the standard static file handling with our own dynamic version
-@app.route("/statico/<path:filename>")
-def statico(filename):
-    """
-    Serve static content
-
-    :param filename: static file path to be retrieved
-    :return: static file content
-    """
-    return custom_static(filename)
+app.add_url_rule('/statico/<path:filename>', view_func=service.views.web_app_routes.statico)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=app.config['DEBUG'], port=app.config['PORT'], threaded=app.config.get("THREADED", False))
