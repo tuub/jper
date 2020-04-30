@@ -11,7 +11,7 @@ def index():
     return render_template("index.html")
 
 
-def statico(filename):
+def static(filename):
     """
     Serve static content
 
