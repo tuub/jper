@@ -87,7 +87,7 @@ def load_ezb2gnd(fname):
     try:
         with open(fname,'r') as f:
             for line in f:
-                line=str(line.replace('\r','; '),'utf-8')
+                line=line.replace('\r','; ')
                 key, val = line.split('\t')
                 if key in gnd: 
                     gnd[key] += [ val[:-1] ] # [unicode(val[:-1],'utf-8')]
@@ -117,9 +117,9 @@ def mkdir_p(path):
 
 def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
 
-    print(((" %7s == %s ('%s')" % (ezbid, fullname, sigel)).encode('utf-8')))
+    print(((" %7s == %s ('%s')" % (ezbid, fullname, sigel))))
 
-    outfname = ("%s/%s_template.csv" % (RESULTDIR, ezbid)).encode('utf-8')
+    outfname = ("%s/%s_template.csv" % (RESULTDIR, ezbid))
     recursion = 'full'
 
     if 'Planck' in fullname or 'Fraunhofer' in fullname or 'Leibniz' in fullname or 'Helmholtz' in fullname:
@@ -139,7 +139,7 @@ def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
             #                 due to different encodings in ezb2gnd and gndidx
             #                 Needs review though: Adopt to new subprocess module!
             # 2017-03-09 TD : Now using 'zgrep' due to github's 50.00 MB limit recommendation
-            cmd = ('zgrep "^%s\t" "%s"' % (corp,gzfname)).encode('utf-8')
+            cmd = ('zgrep "^%s\t" "%s"' % (corp,gzfname))
             ### cmd = (u'grep "^%s\t" "%s" | cut -f2' % (corp,fname)).encode('utf-8')
             ans = os.popen(cmd).read().split('\n')
             while len(ans[-1]) == 0: ans = ans[:-1]
@@ -148,14 +148,14 @@ def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
             #    https = unicode( ','.join(ans), 'utf-8' )
             #    print((u" %7s => %s : %s" % (ezbid, corp, https)).encode('utf-8'))
             #else:
-            print(((" %7s => %s" % (ezbid, corp)).encode('utf-8')))
+            print((" %7s => %s" % (ezbid, corp)))
 
             for s in ans:
                 http = s.split('\t')
-                if http[0]: affs += [str(http[0],'utf-8')]
+                if http[0]: affs += [http[0]]
                 if http[1]: affs += find_affiliation(http[1], recursion=recursion)
 
-        exlist = [unicodedata.normalize('NFD',str(x,'utf-8')) for x in 
+        exlist = [unicodedata.normalize('NFD',x) for x in
                     ['HH','Deutschland','Max-Planck-Institut',
                     'Universität','University','Université','Universidad','Universitas',
                     'Uniwersytet','Universitet','Gesamthochschule','Uni','Università',
@@ -184,14 +184,14 @@ def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
                 for aff in sorted(set(affs)):
                     if aff and not (aff in exlist):
                         tmp = aff.replace('"',"''")
-                        print((("%s" % tmp).encode('utf-8')))
-                        f.write( ('"%s",,,,,\n' % tmp).encode('utf-8') )
+                        print(("%s" % tmp))
+                        f.write(('"%s",,,,,\n' % tmp))
         except IOError:
             print(("WARNING: Could not write to file '{x}'.".format(x=outfname)))
             for aff in sorted(set(affs)):
                 if aff and not (aff in exlist):
                     tmp = aff.replace('"',"''")
-                    print((("%s" % tmp).encode('utf-8')))
+                    print(("%s" % tmp))
 
     print()
     return
@@ -199,7 +199,7 @@ def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
 
 def get_pass(pw_len=12):
     new_pw = "geheim"
-    chrs = string.letters + string.digits
+    chrs = string.ascii_letters + string.digits
     while new_pw == "geheim":
         new_pw = ''.join([chrs[ord(os.urandom(1)) % len(chrs)] for j in range(pw_len)])
     return new_pw
@@ -207,10 +207,10 @@ def get_pass(pw_len=12):
 
 def update_account(fullname, ezbid, sigel='', purge=False, passive=False):
 
-    csvfname = ("%s/%s_template.csv" % (RESULTDIR, ezbid)).encode('utf-8')
-    email = ("%s@deepgreen.org" % ezbid).encode('utf-8')
+    csvfname = ("%s/%s_template.csv" % (RESULTDIR, ezbid))
+    email = ("%s@deepgreen.org" % ezbid)
     # pw = (u"%sDeepGreen%d" % (ezbid,(len(ezbid)-1))).encode('utf-8')
-    pw = ("%s" % (get_pass())).encode('utf-8')
+    pw = ("%s" % (get_pass()))
 
     acc = Account.pull_by_key('repository.bibid',ezbid)
 
@@ -222,11 +222,11 @@ def update_account(fullname, ezbid, sigel='', purge=False, passive=False):
             acc.remove()
             time.sleep(1)
             if rec is not None:
-                print(("INFO: Both account *AND* match config for id='{x}' successfully removed!".format(x=ezbid)))
+                print("INFO: Both account *AND* match config for id='{x}' successfully removed!".format(x=ezbid))
             else:
-                print(("INFO: Repository account for id='{x}' successfully removed!".format(x=ezbid)))
+                print("INFO: Repository account for id='{x}' successfully removed!".format(x=ezbid))
         else:
-            print(("WARNING: Repository account for id='{x}' not found; nothing removed...".format(x=ezbid)))
+            print("WARNING: Repository account for id='{x}' not found; nothing removed...".format(x=ezbid))
         return
 
     #
@@ -248,10 +248,10 @@ def update_account(fullname, ezbid, sigel='', purge=False, passive=False):
     if 'repository' not in acc.data: acc.data['repository'] = {}
     acc.data['repository']['software'] =  ''
     acc.data['repository']['url'] =  ''
-    acc.data['repository']['name'] = ("%s" % fullname).encode('utf-8')
-    acc.data['repository']['bibid'] = ("%s" % ezbid).encode('utf-8')
+    acc.data['repository']['name'] = ("%s" % fullname)
+    acc.data['repository']['bibid'] = ("%s" % ezbid)
     if len(sigel) > 0:
-        acc.data['repository']['sigel'] = [("%s" % sgl).encode('utf-8') for sgl in sigel.split(',')]
+        acc.data['repository']['sigel'] = [("%s" % sgl) for sgl in sigel.split(',')]
     if passive is True:
         acc.set_passive()
 
@@ -333,7 +333,7 @@ if __name__ == "__main__":
                         if 'EZB-Id' in row and 'Institution' in row:
                             if 'Institution' in row['Institution']: continue 
                             # part[unicode("a"+row['EZB-Id'],'utf-8')] = ( unicode(row['Institution'].replace('\r','; '),'utf-8'), unicode(row['Sigel'],'utf-8') )
-                            part[str(row['EZB-Id'],'utf-8')] = ( str(row['Institution'].replace('\r','; '),'utf-8'), str(row['Sigel'],'utf-8') )
+                            part[row['EZB-Id']] = (row['Institution'].replace('\r','; '), row['Sigel'])
             except IOError:
                 print(("ERROR: Could not read/parse '{x}' (IOError).".format(x=fname)))
 
