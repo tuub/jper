@@ -1,8 +1,8 @@
 [submodule "esprit"]
 	path = esprit
-	url = git@github.com:tuub/esprit.git
+	url = git@github.com/tuub/esprit.git
 	branch = python-2to3
 [submodule "magnificent-octopus"]
 	path = magnificent-octopus
-	url = git@github.com:tuub/magnificent-octopus.git
+	url = git@github.com/tuub/magnificent-octopus.git
 	branch = python-2to3
