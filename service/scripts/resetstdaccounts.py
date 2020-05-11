@@ -87,8 +87,8 @@ def load_ezb2gnd(fname):
     try:
         with open(fname,'r') as f:
             for line in f:
-                line=str(line.replace('\r','; '),'utf-8')
-                key, val = line.split('\t')
+                line=line.replace('\r','; ').encode('utf-8')
+                key, val = line.decode().split('\t')
                 if key in gnd: 
                     gnd[key] += [ val[:-1] ] # [unicode(val[:-1],'utf-8')]
                 else: 
@@ -117,45 +117,45 @@ def mkdir_p(path):
 
 def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
 
-    print(((" %7s == %s ('%s')" % (ezbid, fullname, sigel)).encode('utf-8')))
+    print(" %7s == %s ('%s')" % (ezbid.decode(), fullname.decode(), sigel))
 
     outfname = ("%s/%s_template.csv" % (RESULTDIR, ezbid)).encode('utf-8')
     recursion = 'full'
 
-    if 'Planck' in fullname or 'Fraunhofer' in fullname or 'Leibniz' in fullname or 'Helmholtz' in fullname:
+    if 'Planck' in fullname.decode() or 'Fraunhofer' in fullname.decode() or 'Leibniz' in fullname.decode() or 'Helmholtz' in fullname.decode():
         recursion = 'noadue'
 
-    if 'Gottfried Wilhelm Leibniz' in fullname:
+    if 'Gottfried Wilhelm Leibniz' in fullname.decode():
         recursion = 'full'
 
-    if ezbid in ['aDLLR', 'aDZNE', 'aFZJUE', 'aDESY', 'aGFZPO', 'aIFZ', 'aMBCB', 
+    if ezbid.decode() in ['aDLLR', 'aDZNE', 'aFZJUE', 'aDESY', 'aGFZPO', 'aIFZ', 'aMBCB',
                  'aDM', 'aZBW', 'aFAB', 'aUBWH', 'aDPMA', 'aSUBHH', 'aHDZ', 'aIHP' ]:
         recursion = 'noadue'
 
-    if fullname in ezb2gnd:
+    if fullname.decode() in ezb2gnd:
         affs = []
-        for corp in ezb2gnd[fullname]:
+        for corp in ezb2gnd[fullname.decode()]:
             # 2017-03-07 TD : Working here with 'popen' instead regular expressions
             #                 due to different encodings in ezb2gnd and gndidx
             #                 Needs review though: Adopt to new subprocess module!
             # 2017-03-09 TD : Now using 'zgrep' due to github's 50.00 MB limit recommendation
             cmd = ('zgrep "^%s\t" "%s"' % (corp,gzfname)).encode('utf-8')
             ### cmd = (u'grep "^%s\t" "%s" | cut -f2' % (corp,fname)).encode('utf-8')
-            ans = os.popen(cmd).read().split('\n')
+            ans = os.popen(cmd.decode()).read().split('\n')
             while len(ans[-1]) == 0: ans = ans[:-1]
             ##print("DEBUG: {d}".format(d=ans))
             #if ans:
             #    https = unicode( ','.join(ans), 'utf-8' )
             #    print((u" %7s => %s : %s" % (ezbid, corp, https)).encode('utf-8'))
             #else:
-            print(((" %7s => %s" % (ezbid, corp)).encode('utf-8')))
+            print(" %7s => %s" % (ezbid.decode(), corp))
 
             for s in ans:
                 http = s.split('\t')
-                if http[0]: affs += [str(http[0],'utf-8')]
+                if http[0]: affs += [http[0]]
                 if http[1]: affs += find_affiliation(http[1], recursion=recursion)
 
-        exlist = [unicodedata.normalize('NFD',str(x,'utf-8')) for x in 
+        exlist = [unicodedata.normalize('NFD',x) for x in
                     ['HH','Deutschland','Max-Planck-Institut',
                     'Universität','University','Université','Universidad','Universitas',
                     'Uniwersytet','Universitet','Gesamthochschule','Uni','Università',
@@ -187,8 +187,8 @@ def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
                 for aff in sorted(set(affs)):
                     if aff and not (aff in exlist):
                         tmp = aff.replace('"',"''")
-                        print((("%s" % tmp).encode('utf-8')))
-                        f.write( ('"%s",,,,,\n' % tmp).encode('utf-8') )
+                        print(("%s" % tmp))
+                        f.write(('"%s",,,,,\n' % tmp))
         except IOError:
             print(("WARNING: Could not write to file '{x}'.".format(x=outfname)))
             for aff in sorted(set(affs)):
@@ -202,11 +202,11 @@ def find_in_gndidx(fullname,ezbid,sigel,ezb2gnd,gzfname):
 
 def update_account(fullname, ezbid, sigel='', purge=False):
 
-    csvfname = ("%s/%s_template.csv" % (RESULTDIR, ezbid)).encode('utf-8')
-    email = ("%s@deepgreen.org" % ezbid).encode('utf-8')
-    pw = ("%sDeepGreen%d" % (ezbid,(len(ezbid)-1))).encode('utf-8')
+    csvfname = ("%s/%s_template.csv" % (RESULTDIR, ezbid.decode()))
+    email = ("%s@deepgreen.org" % ezbid.decode())
+    pw = ("%sDeepGreen%d" % (ezbid.decode(),(len(ezbid.decode())-1)))
 
-    acc = Account.pull_by_key('repository.bibid',ezbid)
+    acc = Account.pull_by_key('repository.bibid',ezbid.decode())
 
     if purge is True:
         if acc is not None and acc.has_role('repository'):
@@ -216,11 +216,11 @@ def update_account(fullname, ezbid, sigel='', purge=False):
             acc.remove()
             time.sleep(1)
             if rec is not None:
-                print(("INFO: Both account *AND* match config for id='{x}' successfully removed!".format(x=ezbid)))
+                print(("INFO: Both account *AND* match config for id='{x}' successfully removed!".format(x=ezbid.decode())))
             else:
-                print(("INFO: Repository account for id='{x}' successfully removed!".format(x=ezbid)))
+                print(("INFO: Repository account for id='{x}' successfully removed!".format(x=ezbid.decode())))
         else:
-            print(("WARNING: Repository account for id='{x}' not found; nothing removed...".format(x=ezbid)))
+            print(("WARNING: Repository account for id='{x}' not found; nothing removed...".format(x=ezbid.decode())))
         return
 
     #
@@ -242,14 +242,14 @@ def update_account(fullname, ezbid, sigel='', purge=False):
     if 'repository' not in acc.data: acc.data['repository'] = {}
     acc.data['repository']['software'] =  ''
     acc.data['repository']['url'] =  ''
-    acc.data['repository']['name'] = ("%s" % fullname).encode('utf-8')
-    acc.data['repository']['bibid'] = ("%s" % ezbid).encode('utf-8')
+    acc.data['repository']['name'] = ("%s" % fullname.decode())
+    acc.data['repository']['bibid'] = ("%s" % ezbid.decode())
     if len(sigel) > 0:
-        acc.data['repository']['sigel'] = [("%s" % sgl).encode('utf-8') for sgl in sigel.split(',')]
+        acc.data['repository']['sigel'] = [("%s" % sgl) for sgl in sigel.split(',')]
 
     acc.save()
     time.sleep(1)
-    print(("INFO: Account for id='{x}' updated/created.".format(x=ezbid)))
+    print(("INFO: Account for id='{x}' updated/created.".format(x=ezbid.decode())))
 
     #
     rec = RepositoryConfig().pull_by_repo(acc.id)
@@ -261,11 +261,11 @@ def update_account(fullname, ezbid, sigel='', purge=False):
         with open(csvfname,'r') as f:
             saved = rec.set_repo_config(csvfile=f, repository=acc.id)
             if saved:
-                print(("INFO: Match config for id='{x}' updated.".format(x=ezbid)))
+                print(("INFO: Match config for id='{x}' updated.".format(x=ezbid.decode())))
             else:
-                print(("WARNING: Could not update match config for id='{x}'.".format(x=ezbid)))
+                print(("WARNING: Could not update match config for id='{x}'.".format(x=ezbid.decode())))
     except:
-        print(("WARNING: Could not upload repository config for id='{x}'.".format(x=ezbid)))
+        print(("WARNING: Could not upload repository config for id='{x}'.".format(x=ezbid.decode())))
 
     return
 
@@ -324,7 +324,7 @@ if __name__ == "__main__":
                     for row in reader:
                         if 'EZB-Id' in row and 'Institution' in row:
                             if 'Institution' in row['Institution']: continue 
-                            part[str("a"+row['EZB-Id'],'utf-8')] = ( str(row['Institution'].replace('\r','; '),'utf-8'), str(row['Sigel'],'utf-8') )
+                            part[("a"+row['EZB-Id']).encode('utf-8')] = ( row['Institution'].replace('\r','; ').encode('utf-8'), row['Sigel'].encode('utf-8') )
             except IOError:
                 print(("ERROR: Could not read/parse '{x}' (IOError).".format(x=fname)))
 
@@ -341,7 +341,7 @@ if __name__ == "__main__":
 
         for ezbid,val in list(part.items()):
            fullname, sigel = val
-           sigel = ",".join(set(sigel.split(',')))
+           sigel = ",".join(set(sigel.decode().split(',')))
            if args.net is True:
                find_in_gndidx(fullname, ezbid, sigel, idx, GND_IDX_FILE)
            update_account(fullname, ezbid, sigel, args.purge)
