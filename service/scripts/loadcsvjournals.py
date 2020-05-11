@@ -56,7 +56,7 @@ if __name__ == "__main__":
     #
     # reports.delivery_report(args.from_date, args.to_date, reportfile)
 
-    with open(args.table, 'rb') as csvfile:
+    with open(args.table, 'r') as csvfile:
         license = License()
         j = 0
         for row in csvfile:
