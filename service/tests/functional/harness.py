@@ -451,7 +451,7 @@ def validate(base_url, keys, throttle, mdrate, mderrors, cterrors, max_file_size
             # sleep before making the next request
             time.sleep(throttle)
         except Exception as e:
-            app.logger.error("Thread:{x} - MAJOR ISSUE - Fatal exception '{y}'".format(x=tname, y=e.message))
+            app.logger.error("Thread:{x} - MAJOR ISSUE - Fatal exception '{y}'".format(x=tname, y=e))
 
 
 def create(base_url, keys, throttle, mdrate, mderrors, cterrors, max_file_size, tmpdir, retrieve_rate, routable, repo_configs):
@@ -548,14 +548,14 @@ def create(base_url, keys, throttle, mdrate, mderrors, cterrors, max_file_size, 
                                 try:
                                     stream, headers = j.get_content(url)
                                 except Exception as e:
-                                    app.logger.error("Thread:{x} - MAJOR ISSUE; get content failed for Content:{z} that should have existed.  This needs a fix: '{b}'".format(x=tname, z=url, b=e.message))
+                                    app.logger.error("Thread:{x} - MAJOR ISSUE; get content failed for Content:{z} that should have existed.  This needs a fix: '{b}'".format(x=tname, z=url, b=e))
                     except Exception as e:
-                        app.logger.error("Thread:{x} - MAJOR ISSUE; get notification failed for Notification:{y} that should have existed.  This needs a fix: '{b}'".format(x=tname, y=id, b=e.message))
+                        app.logger.error("Thread:{x} - MAJOR ISSUE; get notification failed for Notification:{y} that should have existed.  This needs a fix: '{b}'".format(x=tname, y=id, b=e))
 
             # sleep before making the next request
             time.sleep(throttle)
         except Exception as e:
-            app.logger.error("Thread:{x} - Fatal exception '{y}'".format(x=tname, y=e.message))
+            app.logger.error("Thread:{x} - Fatal exception '{y}'".format(x=tname, y=e))
 
 
 def listget(base_url, keys, throttle, generic_rate, max_lookback, tmpdir, repo_configs, error_rate, get_rate):
@@ -666,7 +666,7 @@ def listget(base_url, keys, throttle, generic_rate, max_lookback, tmpdir, repo_c
                             n = j.get_notification(note.id)
                             app.logger.debug("Thread:{x} - Following List/Get for Account:{y} listing notifications for Repository:{z}, successfully retrieved copy of Notification:{a}".format(x=tname, y=api_key, z=repository_id, a=note.id))
                         except Exception as e:
-                            app.logger.error("Thread:{x} - MAJOR ISSUE; get notification failed for Notification:{y} that should have existed.  This needs a fix: '{b}'".format(x=tname, y=note.id, b=e.message))
+                            app.logger.error("Thread:{x} - MAJOR ISSUE; get notification failed for Notification:{y} that should have existed.  This needs a fix: '{b}'".format(x=tname, y=note.id, b=e))
 
                     # now retrieve all the links in the note
                     for link in note.links:
@@ -678,17 +678,17 @@ def listget(base_url, keys, throttle, generic_rate, max_lookback, tmpdir, repo_c
                             # we got a 401 back from the service, that is acceptable, since we may not be authorised to access it
                             app.logger.debug(("Thread:{x} - get content unauthorised (401) for Content:{z} - this can happen, so is not necessarily unexpected".format(x=tname, z=url)))
                         except Exception as e:
-                            app.logger.error("Thread:{x} - MAJOR ISSUE; get content failed for Content:{z} that should have existed.  This needs a fix: '{b}'".format(x=tname, z=url, b=e.message))
+                            app.logger.error("Thread:{x} - MAJOR ISSUE; get content failed for Content:{z} that should have existed.  This needs a fix: '{b}'".format(x=tname, z=url, b=e))
 
                 app.logger.debug("Thread:{x} - List/Get request completed successfully for Account:{y} listing notifications for Repository:{z} Count:{a}".format(x=tname, y=api_key, z=repository_id, a=count))
 
             except Exception as e:
-                app.logger.error("Thread:{x} - MAJOR ISSUE; List/Get request for Account:{y} listing notifications for Repository:{z} resulted in exception '{e}'".format(x=tname, y=api_key, z=repository_id, e=e.message))
+                app.logger.error("Thread:{x} - MAJOR ISSUE; List/Get request for Account:{y} listing notifications for Repository:{z} resulted in exception '{e}'".format(x=tname, y=api_key, z=repository_id, e=e))
 
             # sleep before making the next request
             time.sleep(throttle)
         except Exception as e:
-            app.logger.error("Thread:{x} - Fatal exception '{y}'".format(x=tname, y=e.message))
+            app.logger.error("Thread:{x} - Fatal exception '{y}'".format(x=tname, y=e))
 
 
 if __name__ == "__main__":
