@@ -16,7 +16,7 @@ from octopus.modules.epmc.models import JATS, EPMCMetadataXML, RSCMetadataXML
 # 2017-01-19 TD : in the deepgreen setting, postcodes are not needed. They are rather counter-productive...
 from service import models
 from octopus.modules.store import store
-from io import StringIO
+from io import BytesIO
 
 class PackageException(Exception):
     """
@@ -683,7 +683,7 @@ class FilesAndJATS(PackageHandler):
         sources = [("filesandjats_jats.xml", self.jats), ("filesandjats_epmc.xml", self.epmc)]
         for n, x in sources:
             if x is not None:
-                yield n, StringIO(x.tostring())
+                yield n, BytesIO(x.tostring())
 
     def notification_metadata(self):
         """
@@ -1515,7 +1515,7 @@ class FilesAndRSC(PackageHandler):
         sources = [("filesandrsc_rsc.xml", self.rsc_xml)]
         for n, x in sources:
             if x is not None:
-                yield n, StringIO(x.tostring())
+                yield n, BytesIO(x.tostring())
 
     def notification_metadata(self):
         """
