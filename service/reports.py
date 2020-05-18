@@ -255,6 +255,8 @@ def publisher_report(from_date, to_date, reportfile):
                             obj[k] = 0
 
             data[obj.get("Publisher")] = obj
+        # close the opened file_object
+        sofar.file_object.close()
 
 
     # now add any new data from the report
@@ -458,7 +460,8 @@ def delivery_report(from_date, to_date, reportfile):
                             obj[k] = 0
 
             data[obj.get("HEI")] = obj
-
+        # close the opened file_object
+        sofar.file_object.close()
 
     # now add any new data from the report
     for id, res in result.items():
