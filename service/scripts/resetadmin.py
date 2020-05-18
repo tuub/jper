@@ -6,7 +6,7 @@ account and builds a new one in its place.  This means no historical data will
 be kept from the before time.
 """
 from octopus.core import add_configuration, app
-from werkzeug import generate_password_hash
+from werkzeug.security import generate_password_hash
 # from datetime import datetime
 import os, requests, json
 
