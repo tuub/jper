@@ -24,7 +24,7 @@ def valid_url(form, url):
         if(False == H_QueryInvoker().is_valid(MULTI_PAGE, form.url.data)):   
             raise ValidationError('0 results from %s for this engine' % MULTI_PAGE)
     except Exception as e:
-        raise ValidationError('Url is wrong check it again: ' + e)
+        raise ValidationError('Url is wrong check it again: ' + str(e))
 
     return True
 
@@ -32,7 +32,7 @@ def valid_query(form, query):
     try:
         json.loads(form.data.query)
     except Exception as e:
-        raise ValidationError('Query is wrong: ' + e)
+        raise ValidationError('Query is wrong: ' + str(e))
 
     return True
 
@@ -49,7 +49,7 @@ def valid_date(form, date):
     try:
         time.mktime(datetime.strptime(form.end_date.data, "%Y-%m-%d").timetuple())
     except Exception as e:
-        raise ValidationError('Date is wrong: ' + e)
+        raise ValidationError('Date is wrong: ' + str(e))
 
     return True
 
@@ -60,7 +60,7 @@ def valid_wait_window(form,wait):
         if(int(form.wait_window.data) < 0):
             raise ValidationError('Should be positive')
     except Exception as e:
-        raise ValidationError('Wait window is wrong: ' + e)
+        raise ValidationError('Wait window is wrong: ' + str(e))
 
     return True
 

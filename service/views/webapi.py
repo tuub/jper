@@ -173,7 +173,7 @@ def validate():
     try:
         md, zipfile = _get_parts()
     except BadRequest as e:
-        return _bad_request(e)
+        return _bad_request(str(e))
 
     try:
         JPER.validate(current_user, md, zipfile)

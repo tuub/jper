@@ -70,7 +70,7 @@ if __name__ == "__main__":
                             print(("activate {repo}".format(repo=repo)))
                             control.activate_account(repo)
         except Exception as e:
-            print(("ERROR: exception '{s}'".format(s=e)))
+            print(("ERROR: exception '{s}'".format(s=str(e))))
             pass
     else:
         if args.stop:
