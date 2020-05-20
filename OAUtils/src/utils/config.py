@@ -109,4 +109,4 @@ configMySQL = {
                'raise_on_warnings': True,
                }
 
-configES = [{'host': 'gateway', 'port': 9200, 'timeout': 300}]
+configES = [{'host': 'gate', 'port': 9200, 'timeout': 300}]
