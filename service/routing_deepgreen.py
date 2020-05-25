@@ -104,15 +104,22 @@ def _route(unrouted):
     app.logger.debug("Routing - Notification:{y} match_data:{x}".format(y=unrouted.id, x=match_data))
 
     # 2016-09-08 TD : start of alliance license legitimation
-    doi = metadata.get_identifiers("doi")
+    doi = None
+    issn_data = None
+    publ_date = None
+
+    if metadata is not None:
+        doi = metadata.get_identifiers("doi")
+        issn_data = metadata.get_identifiers("issn")
+        publ_date = metadata.publication_date
+
     if doi is None:
         doi = "unkown"
     elif len(doi) == 0:
         doi = "unknown"
     else:
         doi = doi[0]
-    issn_data = metadata.get_identifiers("issn")
-    publ_date = metadata.publication_date
+
     if issn_data is not None and len(issn_data)>0 and publ_date is not None:
         dt = datetime.strptime(publ_date, "%Y-%m-%dT%H:%M:%SZ")
         publ_year = str(dt.year)
