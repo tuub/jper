@@ -48,6 +48,7 @@ class TestRouting(ESTestCase):
         app.config["STORE_IMPL"] = self.store_impl
         app.config["RUN_SCHEDULE"] = self.run_schedule
         app.config["KEEP_FAILED_NOTIFICATIONS"] = self.keep_failed
+        app.config["STORE_IMPL"] = "octopus.modules.store.store.StoreLocal"
 
         if os.path.exists(self.custom_zip_path):
             os.remove(self.custom_zip_path)
@@ -569,6 +570,7 @@ class TestRouting(ESTestCase):
 
         # now run the routing algorithm
         routing.route(urn)
+        self.stored_ids.append(urn.id)
 
         # give the index a chance to catch up before checking the results
         time.sleep(3)
@@ -632,6 +634,7 @@ class TestRouting(ESTestCase):
 
         # now run the routing algorithm
         routing.route(urn)
+        self.stored_ids.append(urn.id)
 
         # give the index a chance to catch up before checking the results
         time.sleep(2)
@@ -681,6 +684,7 @@ class TestRouting(ESTestCase):
 
         # now run the routing algorithm
         routing.route(urn)
+        self.stored_ids.append(urn.id)
 
         # give the index a chance to catch up before checking the results
         time.sleep(2)
