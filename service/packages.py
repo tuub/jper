@@ -175,6 +175,10 @@ class PackageManager(object):
         md = pm.notification_metadata()
         ma = pm.match_data()
 
+        # close streams
+        for handle in handles:
+            handle[1].close()
+
         # return the extracted data
         return md, ma
 
@@ -221,6 +225,7 @@ class PackageManager(object):
             # temp directory
             stream = storage_manager.get(store_id, pm.zip_name())
             tmp.store(store_id, pm.zip_name(), source_stream=stream)
+            stream.close()
 
             # get the in path for the converter to use
             in_path = tmp.path(store_id, pm.zip_name())
@@ -241,6 +246,7 @@ class PackageManager(object):
             for tf, zn, un in conversions:
                 stream = tmp.get(store_id, zn)
                 storage_manager.store(store_id, zn, source_stream=stream)
+                stream.close()
         finally:
             try:
                 # finally, burn the local copy
