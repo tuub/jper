@@ -244,6 +244,10 @@ def retrieve_content(notification_id, filename=None):
     try:
 
         filestream = JPER.get_content(current_user, notification_id, filename)
+        # check if no suitable content has been found to return
+        if filestream is None:
+            return _not_found()
+
         nt = models.ContentLog({"user":current_user.id,"notification":notification_id,"filename":fn,"delivered_from":"store"})
         return Response(stream_with_context(filestream), 
                         mimetype="application/zip",
