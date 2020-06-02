@@ -36,6 +36,31 @@ def _load_repo_configs(path):
         return json.loads(f.read())
 
 
+def _get_email_from_author_ids_json_object(author_ids):
+    """
+    Retrieve the email address from the specified author ids json object
+
+    :param author_ids:
+    :return: the author email address
+    """
+    for aid in author_ids:
+        if aid.get("type") == "email":
+           return aid['id']
+    return None
+
+
+def _random_email():
+    """
+    Generate a random email address
+
+    :return: something that looks like an email address
+    """
+    import random
+    import string
+    email = ''.join(random.choice(string.ascii_lowercase) for i in range(10)) + '@' + random.choice(["ac.uk", "edu", "com"])
+    return email
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
@@ -84,7 +109,7 @@ if __name__ == "__main__":
         key = keys[i]
 
         # delete any existing repo config
-        models.RepositoryConfig.delete_by_query({"query" : {"term" : {"repository.exact" : config["repository"]}}})
+        models.RepositoryConfig.delete_by_query({"query" : {"term" : {"repo.exact" : config["repo"]}}})
 
         # make the repository config
         rc = models.RepositoryConfig(config)
@@ -93,6 +118,7 @@ if __name__ == "__main__":
         # make the user account
         acc = models.Account()
         acc.id = rc.repository
+        acc.data['email'] = _get_email_from_author_ids_json_object(config['author_ids'])
         acc.add_packaging("http://purl.org/net/sword/package/SimpleZip")
         acc.set_api_key(key)
         acc.add_role("repository")
@@ -106,8 +132,14 @@ if __name__ == "__main__":
     # load the publisher accounts
     if pubs is not None:
         for key in pubs:
+            # check if the key is an empty string
+            if not key:
+               continue
+            # delete account if exists, otherwise it will create a second account with the same API key, and errors will ensue.
+            models.Account.delete_by_query({"query" : {"term" : {"api_key.exact" : key}}})
             acc = models.Account()
             acc.set_api_key(key)
+            acc.data['email'] = _random_email()
             acc.add_role("publisher")
             acc.save()
 

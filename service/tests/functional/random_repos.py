@@ -76,11 +76,11 @@ for i in range(70):
     cobj["repository"] = uuid.uuid4().hex
     configs.append(cobj)
 
-with open("gen_repo_configs.json", "wb") as f:
+with open("gen_repo_configs.json", "w") as f:
     f.write(json.dumps(configs, indent=2))
 
 s = ""
 for i in range(70):
     s += uuid.uuid4().hex + "\n"
-with open("gen_repo_keys.txt", "wb") as f:
+with open("gen_repo_keys.txt", "w") as f:
     f.write(s)

@@ -1,7 +1,7 @@
 [
     {
         "id" : "1234567890",
-        "repository" : "abcdefghijk",
+        "repo" : "abcdefghijk",
 
         "domains" : ["ucl.ac.uk", "universitycollegelondon.ac.uk"],
         "name_variants" : ["UCL", "U.C.L", "University College"],
