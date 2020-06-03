@@ -54,6 +54,17 @@ def _random_postcode():
 def _random_strings():
     return _random_string(5, 10)
 
+def _random_author_ids_type_email():
+    """
+    Generate a random email address
+
+    :return: a json object with type email and something that looks like an email address
+    """
+    import random
+    import string
+    email = ''.join(random.choice(string.ascii_lowercase) for i in range(10)) + '@' + random.choice(["ac.uk", "edu", "com"])
+    return {"id": email,  "type" : "email"}
+
 fields = [
     "domains", "name_variants", "postcodes", "strings"
 ]
@@ -73,7 +84,8 @@ for i in range(70):
         cobj[f] = [randomisers[f]()]
 
     cobj["id"] = uuid.uuid4().hex
-    cobj["repository"] = uuid.uuid4().hex
+    cobj["repo"] = uuid.uuid4().hex
+    cobj["author_ids"] = [_random_author_ids_type_email()]
     configs.append(cobj)
 
 with open("gen_repo_configs.json", "w") as f:
