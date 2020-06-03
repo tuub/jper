@@ -23,11 +23,8 @@ from itertools import zip_longest
 
 
 from service import models
-
-try:
-    from io import StringIO
-except:
-    from io import StringIO
+from io import StringIO
+from io import BytesIO
 
 
 blueprint = Blueprint('account', __name__)
@@ -367,7 +364,7 @@ def download(account_id):
     rows = list( zip_longest(*rows, fillvalue='') )
     #
 
-    strm = StringIO()
+    strm = BytesIO()
     writer = unicodecsv.writer(strm, delimiter=',', quoting=unicodecsv.QUOTE_ALL)
     # writer = csv.writer(strm, delimiter=',', quoting=csv.QUOTE_ALL)
     # 2016-12-14 TD : python's native 'csv'-module has encoding problems...
@@ -380,7 +377,7 @@ def download(account_id):
     writer.writerows(rows)
 
     fname = "{z}_{y}_{x}.csv".format(z=fprefix, y=account_id, x=dates.now())
-    strm.reset()
+    strm.seek(0)
 
     #time.sleep(1)
     #flash(" Saved {z} notifications as\n '{x}'".format(z=fprefix,x=fname), "success")
@@ -702,7 +699,7 @@ def config(username):
 
         rows = list( zip_longest(*rows, fillvalue='') )
 
-        strm = StringIO()
+        strm = BytesIO()
         writer = unicodecsv.writer(strm, delimiter=',', quoting=unicodecsv.QUOTE_MINIMAL)
         # writer = csv.writer(strm, delimiter=',', quoting=csv.QUOTE_ALL)
         # 2016-12-14 TD : python's native 'csv'-module has encoding problems...
@@ -715,7 +712,7 @@ def config(username):
         writer.writerows(rows)
 
         fname = "{z}_{y}_{x}.csv".format(z=fprefix, y=username, x=dates.now())
-        strm.reset()
+        strm.seek(0)
 
         #time.sleep(1)
         #flash(" Saved {z} notifications as\n '{x}'".format(z=fprefix,x=fname), "success")
