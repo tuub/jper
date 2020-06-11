@@ -110,7 +110,7 @@ if __name__ == "__main__":
                     for row in reader:
                         if 'EZB-Id' in row and 'Institution' in row:
                             if 'Institution' in row['Institution']: continue
-                            part.append( str(row['EZB-Id'], 'utf-8') )
+                            part.append( str(row['EZB-Id']))
             except IOError:
                 print("ERROR: Could not read/parse '{x}' (IOError).".format(x=fname))
 
