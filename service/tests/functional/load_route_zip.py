@@ -12,8 +12,20 @@ ZIPFILE = "/path/to/your/zip/here/FilesAndJATS.zip"
 from service import api, models, routing
 import time
 
+def _random_email():
+    """
+    Generate a random email address
+
+    :return: something that looks like an email address
+    """
+    import random
+    import string
+    email = ''.join(random.choice(string.ascii_lowercase) for i in range(10)) + '@' + random.choice(["ac.uk", "edu", "com"])
+    return email
+
 acc = models.Account()
 acc.add_role("publisher")
+acc.data['email'] = _random_email()
 acc.save(blocking=True)
 
 note = {
