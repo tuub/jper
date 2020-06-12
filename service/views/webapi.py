@@ -4,6 +4,7 @@ Blueprint which provides the RESTful web API for JPER
 from flask import Blueprint, make_response, url_for, request, abort, redirect, current_app
 from flask import stream_with_context, Response
 import json, csv
+from io import StringIO
 from octopus.core import app
 from octopus.lib import webapp, dates
 from flask_login import login_user, logout_user, current_user, login_required
@@ -379,10 +380,11 @@ def config(repoid=None):
             saved = rec.set_repo_config(jsoncontent=request.json,repository=repoid)
         else:
             try:
+                stream = StringIO(request.files['file'].stream.read().decode("UTF8"), newline=None)
                 if request.files['file'].filename.endswith('.csv'):
-                    saved = rec.set_repo_config(csvfile=request.files['file'],repository=repoid)
+                    saved = rec.set_repo_config(csvfile=stream,repository=repoid)
                 elif request.files['file'].filename.endswith('.txt'):
-                    saved = rec.set_repo_config(textfile=request.files['file'],repository=repoid)
+                    saved = rec.set_repo_config(textfile=stream,repository=repoid)
             except:
                 saved = False
         if saved:

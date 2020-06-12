@@ -505,10 +505,11 @@ def configView(repoid=None):
             saved = rec.set_repo_config(jsoncontent=request.json,repository=repoid)
         else:
             try:
+                stream = StringIO(request.files['file'].stream.read().decode("UTF8"), newline=None)
                 if request.files['file'].filename.endswith('.csv'):
-                    saved = rec.set_repo_config(csvfile=request.files['file'],repository=repoid)
+                    saved = rec.set_repo_config(csvfile=stream,repository=repoid)
                 elif request.files['file'].filename.endswith('.txt'):
-                    saved = rec.set_repo_config(textfile=request.files['file'],repository=repoid)
+                    saved = rec.set_repo_config(textfile=stream,repository=repoid)
             except:
                 saved = False
         if saved:
@@ -735,10 +736,11 @@ def config(username):
                     elif fn.endswith('.txt'):
                         saved = rec.set_repo_config(textfile=strm,repository=username)
             else:
+                stream = StringIO(request.files['file'].stream.read().decode("UTF8"), newline=None)
                 if request.files['file'].filename.endswith('.csv'):
-                    saved = rec.set_repo_config(csvfile=request.files['file'],repository=username)
+                    saved = rec.set_repo_config(csvfile=stream,repository=username)
                 elif request.files['file'].filename.endswith('.txt'):
-                    saved = rec.set_repo_config(textfile=request.files['file'],repository=username)
+                    saved = rec.set_repo_config(textfile=stream,repository=username)
             if saved:
                 flash('Thank you. Your match config has been updated.', "success")        
             else:
