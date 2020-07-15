@@ -242,7 +242,7 @@ def copyftp():
             else:
                 app.logger.debug('Scheduler - currently, nothing to copy for Account:' + dir)
     except:
-        app.logger.error("Scheduler - copy from DG-STORAGE failed")
+        app.logger.error("Scheduler - copy from DG-STORAGE failed. tmpdir=" + tmpdir + ", pubstoredir=" + pubstoredir)
 
 if app.config.get('COPYFTP_SCHEDULE',10) != 0:
     schedule.every(app.config.get('COPYFTP_SCHEDULE',10)).minutes.do(copyftp)
